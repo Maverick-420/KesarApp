@@ -71,11 +71,18 @@ const Product = () => {
       setAvailabilityMessage("Please enter a valid pincode");
       return;
     }
-    const res = await axios.get(
-      import.meta.env.VITE_API_URL + `/get-pincode/${pincode}`
-    );
-    const data = await res.data;
-    setAvailabilityMessage(data.message);
+
+    try {
+      const res = await axios.get(
+        import.meta.env.VITE_API_URL + `/get-pincode/${pincode}`
+      );
+      const data = res.data;
+      setAvailabilityMessage(data.message);
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong.";
+      setAvailabilityMessage(errorMessage);
+    }
   };
 
   const handleAddToCart = () => {

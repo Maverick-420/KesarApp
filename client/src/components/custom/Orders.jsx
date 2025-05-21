@@ -104,6 +104,12 @@ const Orders = () => {
                         </span>
                       </p>
                       <p className="flex justify-between sm:justify-start gap-2 items-center px-3">
+                        <span className="font-bold">Pincode:</span>
+                        <span className="text-sm text-customGray">
+                          {item?.pincode}
+                        </span>
+                      </p>
+                      <p className="flex justify-between sm:justify-start gap-2 items-center px-3">
                         <span className="font-bold">Name:</span>
                         <span className="text-sm text-customGray">
                           {item?.userId?.name}

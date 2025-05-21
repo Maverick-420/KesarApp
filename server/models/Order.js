@@ -10,6 +10,10 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    pincode: {
+      type: String,
+      required: true,
+    },
     razorpayOrderId: {
       type: String,
       required: true,
@@ -31,9 +35,6 @@ const orderSchema = new mongoose.Schema(
         quantity: {
           type: Number,
           required: true,
-        },
-        color: {
-          type: String,
         },
       },
     ],

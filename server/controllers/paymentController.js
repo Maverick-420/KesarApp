@@ -61,6 +61,7 @@ const verifyPayment = async (req, res) => {
       amount,
       productArray,
       address,
+      pincode,
     } = req.body;
 
     const signature = crypto
@@ -99,6 +100,7 @@ const verifyPayment = async (req, res) => {
       razorpaySignature: signature,
       products: productArray,
       address: address,
+      pincode: pincode,
       userId: userId,
     });
 

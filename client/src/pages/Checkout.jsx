@@ -48,7 +48,7 @@ const Checkout = () => {
 
     try {
       const options = await generatePayment(totalPrice);
-      const success = verifyPayment(options, productArray, address);
+      const success = verifyPayment(options, productArray, address, pincode);
       dispatch(emptyCart());
     } catch (error) {
       return handleErrorLogout(error);

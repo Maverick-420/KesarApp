@@ -41,7 +41,7 @@ const useRazorpay = () => {
     });
   };
 
-  const verifyPayment = async (options, productArray, address) => {
+  const verifyPayment = async (options, productArray, address, pincode) => {
     const res = await loadScript(
       "https://checkout.razorpay.com/v1/checkout.js"
     );
@@ -67,6 +67,7 @@ const useRazorpay = () => {
               amount: options.amount,
               address,
               productArray,
+              pincode,
             },
             {
               headers: {
