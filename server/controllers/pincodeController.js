@@ -46,17 +46,14 @@ const addPincodes = async (req, res) => {
 
 const getPincode = async (req, res) => {
   const { pincode } = req.params;
-
   try {
     const existingPincode = await Pincode.find({ pincode });
-
     if (existingPincode.length === 0) {
       return res.status(404).json({
         success: false,
         message: "No delivery available for this product",
       });
     }
-
     return res
       .status(200)
       .json({ success: true, message: "Delivery available" });

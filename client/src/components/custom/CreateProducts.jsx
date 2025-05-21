@@ -23,25 +23,11 @@ import useErrorLogout from "@/hooks/use-error-logout";
 import axios from "axios";
 
 const CreateProducts = () => {
-  const [currentColor, setCurrentColor] = useState("#000000");
-  const [colors, setColors] = useState([]);
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
   const fileInputRef = useRef(null);
   const { toast } = useToast();
   const { handleErrorLogout } = useErrorLogout();
-
-  const addColor = () => {
-    if (!colors.includes(currentColor)) {
-      setColors([...colors, currentColor]);
-    }
-  };
-
-  const removeColor = (colorToRemove) => {
-    setColors(colors.filter((color) => color !== colorToRemove));
-  };
-
   const removeImage = (indexToRemove) => {
     setImages(images.filter((_, index) => index !== indexToRemove));
   };
@@ -60,7 +46,6 @@ const CreateProducts = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
     const name = e.target.name.value;
     const description = e.target.description.value;
     const price = e.target.price.value;
@@ -73,7 +58,6 @@ const CreateProducts = () => {
       !price ||
       !stock ||
       !category ||
-      colors.length === 0 ||
       images.length === 0
     ) {
       return toast({
@@ -103,14 +87,12 @@ const CreateProducts = () => {
     }
 
     setIsLoading(true);
-
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
     formData.append("price", price);
     formData.append("stock", stock);
     formData.append("category", category);
-    colors.forEach((color) => formData.append("colors", color));
     images.forEach((image) => formData.append("images", image.file));
 
     try {
@@ -207,54 +189,14 @@ const CreateProducts = () => {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Headset">Headset</SelectItem>
-                  <SelectItem value="Keyboard">Keyboard</SelectItem>
-                  <SelectItem value="Mouse">Mouse</SelectItem>
+                  <SelectItem value="Kesar">Kesar</SelectItem>
+                  <SelectItem value="Ayurvedicherbs">Ayurvedicherbs</SelectItem>
+                  <SelectItem value="Others">Others</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="color">Colors</Label>
-              <div className="flex items-center space-x-2">
-                <Input
-                  id="color"
-                  type="color"
-                  value={currentColor}
-                  onChange={(e) => setCurrentColor(e.target.value)}
-                  className="w-12 h-12 p-1 rounded-md"
-                />
-                <Button type="button" variant="outline" onClick={addColor}>
-                  Add Color
-                </Button>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mt-2">
-                {colors.map((color, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center bg-gray-100 rounded-full pl-2 pr-1 py-1"
-                  >
-                    <div
-                      className="w-4 h-4 rounded-full mr-2"
-                      style={{ backgroundColor: color }}
-                    ></div>
-
-                    <span className="text-sm mr-1 dark:text-slate-900">
-                      {color}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      className="h-6 w-6 p-0 rounded-full"
-                      onClick={() => removeColor(color)}
-                    >
-                      <X className="h-4 w-4" />
-                      <span className="sr-only">Remove Color</span>
-                    </Button>
-                  </div>
-                ))}
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="images">Product Images</Label>
                 <div className="flex flex-wrap gap-4">

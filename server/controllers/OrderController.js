@@ -4,7 +4,6 @@ const User = require("../models/User");
 
 const getOrdersByUserId = async (req, res) => {
   const userId = req.id;
-
   try {
     const orders = await Order.find({ userId }).populate({
       path: "products.id",

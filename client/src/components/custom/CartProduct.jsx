@@ -17,7 +17,6 @@ const CartProduct = ({
   quantity,
   stock,
   blacklisted,
-  color,
 }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
@@ -40,12 +39,6 @@ const CartProduct = ({
       toast({ title: "Product isn't available for purchase" });
       return;
     }
-
-    if (color == "") {
-      toast({ title: "Please select a color" });
-      return;
-    }
-
     const order = await generatePayment(price * quantity);
     await verifyPayment(
       order,

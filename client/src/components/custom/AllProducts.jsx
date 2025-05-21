@@ -37,7 +37,6 @@ import { ToastAction } from "../ui/toast";
 
 const AllProducts = () => {
   const { products } = useSelector((state) => state.product);
-
   const [category, setCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -208,9 +207,9 @@ const AllProducts = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="headset">Headset</SelectItem>
-                <SelectItem value="keyboard">Keyboard</SelectItem>
-                <SelectItem value="mouse">Mouse</SelectItem>
+                <SelectItem value="Kesar">kesar</SelectItem>
+                <SelectItem value="Ayurvedicherbs">ayurvedicherbs</SelectItem>
+                <SelectItem value="Other">other</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -302,9 +301,11 @@ const AllProducts = () => {
                     <SelectValue placeholder="Select a category" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Headset">Headset</SelectItem>
-                    <SelectItem value="Keyboard">Keyboard</SelectItem>
-                    <SelectItem value="Mouse">Mouse</SelectItem>
+                    <SelectItem value="Kesar">kesar</SelectItem>
+                    <SelectItem value="Ayurvedicherbs">
+                      ayurvedicherbs
+                    </SelectItem>
+                    <SelectItem value="Other">other</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

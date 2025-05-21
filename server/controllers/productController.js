@@ -8,8 +8,7 @@ const createProduct = async (req, res) => {
   }
 
   try {
-    const { name, price, description, stock, colors, category } = req.body;
-
+    const { name, price, description, stock, category } = req.body;
     const uploadedImages = [];
 
     for (const file in req.files) {
@@ -28,13 +27,11 @@ const createProduct = async (req, res) => {
       price,
       description,
       stock,
-      colors,
       category,
       images: uploadedImages,
     });
 
     await product.save();
-
     return res.status(201).json({
       success: true,
       message: "Product added successfully",

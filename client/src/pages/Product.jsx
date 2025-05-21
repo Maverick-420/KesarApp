@@ -40,7 +40,6 @@ const Product = () => {
   const { toast } = useToast();
   const dispatch = useDispatch();
   const { verifyPayment, generatePayment } = useRazorpay();
-
   const [productQuantity, setProductQuantity] = useState(1);
   const [pincode, setPincode] = useState("");
   const [availabilityMessage, setAvailabilityMessage] = useState("");
@@ -48,7 +47,6 @@ const Product = () => {
   const [address, setAddress] = useState("");
   const [product, setProduct] = useState({});
   const [selectedImage, setSelectedImage] = useState(0);
-  const [productColor, setProductColor] = useState("");
 
   useEffect(() => {
     const fetchProductByName = async () => {
@@ -85,14 +83,6 @@ const Product = () => {
       navigate("/login");
       return;
     }
-
-    if (productColor == "") {
-      toast({
-        title: "Please select a color",
-      });
-      return;
-    }
-
     dispatch(
       addToCart({
         _id: product._id,
@@ -100,7 +90,6 @@ const Product = () => {
         price: product.price,
         quantity: productQuantity,
         image: product.images[0].url,
-        color: productColor,
         stock: product.stock,
         blacklisted: product.blacklisted,
       })
@@ -127,16 +116,10 @@ const Product = () => {
       toast({ title: "Product isn't available for purchase" });
       return;
     }
-
-    if (productColor == "") {
-      toast({ title: "Please select a color" });
-      return;
-    }
-
     const order = await generatePayment(product.price * productQuantity);
     await verifyPayment(
       order,
-      [{ id: product._id, quantity: productQuantity, color: productColor }],
+      [{ id: product._id, quantity: productQuantity }],
       address
     );
 
@@ -186,24 +169,6 @@ const Product = () => {
                 Suggested payments with 6 months special financing
               </p>
             </div>
-
-            <div className="py-5 border-b">
-              <h3 className="font-bold text-lg">Choose Color</h3>
-              <div className="flex items-center my-2">
-                {product?.colors?.map((color, index) => (
-                  <Circle
-                    key={index + color}
-                    fill={color}
-                    strokeOpacity={0.2}
-                    strokeWidth={0.2}
-                    size={40}
-                    onClick={() => setProductColor(color)}
-                    className="cursor-pointer filter hover:brightness-50"
-                  />
-                ))}
-              </div>
-            </div>
-
             <div className="py-5">
               <div className="flex gap-3 items-center">
                 <div className="flex items-center gap-5 bg-gray-100 rounded-full px-3 py-2 w-fit">
@@ -274,9 +239,6 @@ const Product = () => {
             </div>
           </div>
         </main>
-
-        {/* REVIEW SECTION */}
-
         <ReviewsComponent productId={product?._id} />
       </div>
     </>

@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   const [address, setAddress] = useState("");
+  const [pincode, setPincode] = useState("");
   const { cartItems, totalQuantity, totalPrice } = useSelector(
     (state) => state.cart
   );
@@ -27,17 +28,21 @@ const Checkout = () => {
   const handleCheckout = async () => {
     if (address.trim() === "") {
       return toast({
-        title: "Please enter your addresss",
+        title: "Please enter your Address",
         variant: "destructive",
       });
-      return;
+    }
+    if (pincode.trim() === "") {
+      return toast({
+        title: "Please enter your Pincode",
+        variant: "destructive",
+      });
     }
 
     const productArray = cartItems.map((item) => {
       return {
         id: item._id,
         quantity: item.quantity,
-        color: item.color,
       };
     });
 
@@ -118,6 +123,16 @@ const Checkout = () => {
                 placeholder="123 Main st. City, State"
                 className="w=full"
                 onChange={(e) => setAddress(e.target.value)}
+              />
+              <Label htmlFor="pincode">Pincode</Label>
+              <Input
+                id="pincode"
+                type="number"
+                placeholder="Enter your area pincode"
+                className="w-full"
+                required
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value)}
               />
             </div>
             <Button onClick={handleCheckout} className="w-full">

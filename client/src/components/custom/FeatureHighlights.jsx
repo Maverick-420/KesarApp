@@ -31,7 +31,8 @@ const FeatureHighlights = () => {
         <Truck size={40} className="text-brown-500 mb-2" />
         <p className="font-semibold text-sm">
           Domestic
-          <br />& International Shipping
+          <br />
+          Shipping PAN India
         </p>
       </div>
     </div>

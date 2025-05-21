@@ -13,7 +13,7 @@ import { setProducts } from "@/redux/slices/productSlice";
 
 const categoryData = {
   trigger: "Category",
-  items: ["keyboard", "mouse", "headset"],
+  items: ["kesar", "ayurvedicherbs", "others"],
 };
 
 const priceData = {
@@ -25,7 +25,6 @@ const FilterMenu = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [search, setSearch] = useState("");
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,15 +36,12 @@ const FilterMenu = () => {
       const data = await res.data;
       dispatch(setProducts(data.data));
     };
-
     getFilterProducts();
   }, [category, price, search]);
 
   return (
     <div className="w-[93vw] flex flex-col sm:flex-row justify-between items-center mx-auto my-10 gap-3 sm:gap-0">
-      {/* DROPDOWN FILTERS */}
       <div className="flex sm:w-[30%] w-full gap-3">
-        {/* FOR CATEGORY */}
         <Select onValueChange={(value) => setCategory(value)}>
           <SelectTrigger id={categoryData.trigger}>
             <SelectValue placeholder={categoryData.trigger} />
@@ -59,7 +55,6 @@ const FilterMenu = () => {
           </SelectContent>
         </Select>
 
-        {/* FOR PRICE */}
         <Select onValueChange={(value) => setPrice(value)}>
           <SelectTrigger id={priceData.trigger}>
             <SelectValue placeholder={priceData.trigger} />
@@ -74,7 +69,6 @@ const FilterMenu = () => {
         </Select>
       </div>
 
-      {/* SEARCH INPUT */}
       <div className="sm:w-[60%] w-full">
         <Input
           id="search"
