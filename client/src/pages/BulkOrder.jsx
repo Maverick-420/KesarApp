@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import emailjs from "emailjs-com";
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, PackageCheck } from "lucide-react";
 
-const Contact = () => {
+const BulkOrder = () => {
   const formRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
@@ -17,10 +17,10 @@ const Contact = () => {
 
     emailjs
       .sendForm(
-        import.meta.env.VITE_EMAILJS_SERVICEID, // Replace with your EmailJS Service ID
-        import.meta.env.VITE_EMAILJS_TEMPLATEID, // Replace with your EmailJS Template ID
+        import.meta.env.VITE_EMAILJS_SERVICEID,
+        import.meta.env.VITE_EMAILJS_TEMPLATEID,
         formRef.current,
-        import.meta.env.VITE_EMAILJS_PUBLICKEY // Replace with your EmailJS Public Key
+        import.meta.env.VITE_EMAILJS_PUBLICKEY
       )
       .then(
         () => {
@@ -37,12 +37,39 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex justify-center items-center px-4 py-6">
-      <Card className="w-full max-w-2xl shadow-xl border border-kesarilight dark:kesari">
+      <Card className="w-full max-w-3xl shadow-xl border border-kesarilight">
         <CardContent className="p-6 space-y-6">
-          <h2 className="text-3xl font-bold text-kesarilight">Contact Us</h2>
+          <h2 className="text-3xl font-bold text-kesarilight flex items-center gap-2">
+            <PackageCheck className="text-kesarilight" />
+            Bulk Orders
+          </h2>
           <p className="text-muted-foreground">
-            Have questions or need support? We're here to help!
+            At Kashmiri Kesar Inc, we offer a wide range of premium Saffron
+            products tailored for commercial use and resellers. Contact us for
+            pricing, packaging, and custom supply needs.
           </p>
+
+          <div className="bg-gray-50 dark:bg-zinc-800 p-4 rounded-md text-sm space-y-2 border-l-4 border-kesarilight">
+            <p className="font-semibold text-kesarilight">
+              Available Products:
+            </p>
+            <ul className="list-disc list-inside">
+              <li>
+                <strong>Saffron (Kashmiri):</strong> Mogra, Lacha, Half Cut,
+                Chura
+              </li>
+              <li>
+                <strong>Saffron Powder:</strong> Grade 1 & Grade 2
+              </li>
+              <li>
+                <strong>Other Products:</strong> Shilajit (Solid, Paste,
+                Powder), Ashwagandha
+              </li>
+            </ul>
+            <p className="text-xs italic">
+              We support bulk loose & labeled packaging.
+            </p>
+          </div>
 
           {/* Static Contact Info */}
           <div className="space-y-2">
@@ -58,24 +85,25 @@ const Contact = () => {
                 rel="noopener noreferrer"
                 className="text-black dark:text-white hover:underline"
               >
-                +91-7051425899
+                +91-7051425899 (Call/WhatsApp)
               </a>
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Bulk Order Form */}
           <form ref={formRef} onSubmit={sendEmail} className="space-y-4 pt-4">
-            <Input placeholder="Your Name" name="user_name" required />
+            <Input placeholder="Business/Full Name" name="user_name" required />
             <Input
-              placeholder="Your Email"
+              placeholder="Email Address"
               name="user_email"
               type="email"
               required
             />
+            <Input placeholder="Phone Number" name="user_phone" required />
             <Textarea
-              placeholder="Your Message"
+              placeholder="Describe your bulk requirement, product type, quantity & packaging preferences..."
               name="message"
-              rows={5}
+              rows={6}
               required
             />
             <Button
@@ -83,13 +111,13 @@ const Contact = () => {
               className="w-full bg-kesarilight hover:bg-kesari text-white"
               disabled={loading}
             >
-              {loading ? "Sending..." : "Send Message"}
+              {loading ? "Sending..." : "Send Bulk Inquiry"}
             </Button>
           </form>
 
           {sent && (
             <p className="text-green-600 text-center font-semibold">
-              ✅ Message sent successfully!
+              ✅ Your inquiry has been sent successfully!
             </p>
           )}
         </CardContent>
@@ -98,4 +126,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default BulkOrder;

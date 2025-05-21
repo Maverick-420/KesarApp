@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -7,29 +8,59 @@ import {
 } from "@/components/ui/carousel";
 
 const HeaderDisplay = () => {
-  const imagesData = [
-    "https://images.pexels.com/photos/1309766/pexels-photo-1309766.jpeg?auto=compress&cs=tinysrgb&w=600",
-    "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=600",
-    "https://images.pexels.com/photos/1486294/pexels-photo-1486294.jpeg?auto=compress&cs=tinysrgb&w=600",
-    "https://images.pexels.com/photos/777001/pexels-photo-777001.jpeg?auto=compress&cs=tinysrgb&w=600",
-  ];
+  const imagesData = ["branding2.jpg", "branding3.jpg", "branding4.jpg"];
+
+  const [current, setCurrent] = useState(0);
+  const timeoutRef = useRef(null);
+  const delay = 3000; // 3 seconds
+
+  useEffect(() => {
+    resetTimeout();
+    timeoutRef.current = setTimeout(() => {
+      setCurrent((prevIndex) =>
+        prevIndex === imagesData.length - 1 ? 0 : prevIndex + 1
+      );
+    }, delay);
+
+    return () => resetTimeout();
+  }, [current]);
+
+  const resetTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+  };
 
   return (
-    <Carousel className="my-10 mx-auto w-[93vw] overflow-x-clip sm:overflow-visible">
-      <CarouselContent>
-        {imagesData.map((image) => (
-          <CarouselItem key={image}>
-            <img
-              src={image}
-              loading="lazy"
-              className="object-cover w-full h-[60vh] rounded-3xl"
-            />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+    <div className="relative my-10 mx-auto w-[93vw] overflow-hidden">
+      <Carousel>
+        <CarouselContent
+          style={{
+            transform: `translateX(-${current * 100}%)`,
+            transition: "transform 0.5s ease",
+          }}
+          className="flex"
+        >
+          {imagesData.map((image, index) => (
+            <CarouselItem
+              key={index}
+              className="w-[full] h-[50vh] flex-shrink-0"
+            >
+              <div className="w-full h-full rounded-xl overflow-hidden">
+                <img
+                  src={image}
+                  alt={`Slide ${index + 1}`}
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious />
+        <CarouselNext />
+      </Carousel>
+    </div>
   );
 };
 

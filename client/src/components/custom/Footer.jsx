@@ -14,30 +14,15 @@ const Footer = () => {
               Information
             </h5>
             <ul className="list-none space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-orange-600 dark:hover:text-gray-300"
-                >
-                  Refund Policy
-                </a>
+              <li className="hover:text-kesari dark:hover:text-kesari">
+                <Link to="/refundpolicy"> Refund Policy</Link>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-orange-600 dark:hover:text-gray-300"
-                >
-                  Privacy Policy
-                </a>
+              <li className="hover:text-kesari dark:hover:text-kesari">
+                <Link to="/privacypolicy"> Privacy Policy</Link>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-orange-600 dark:hover:text-gray-300"
-                >
-                  Terms of Service
-                </a>
-              </li>
+              <li className="hover:text-kesari dark:hover:text-kesari">
+                <Link to="/terms"> Terms of Service</Link>
+              </li>{" "}
             </ul>
           </div>
 
@@ -46,30 +31,15 @@ const Footer = () => {
             <h5 className="text-xl font-bold mb-6 dark:text-white">
               Quick Links
             </h5>
-            <ul className="list-none space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-orange-600 dark:hover:text-gray-300"
-                >
-                  About Us
-                </a>
+            <ul className="list-none space-y-2 ">
+              <li className="hover:text-kesari dark:hover:text-kesari">
+                <Link to="/about">About</Link>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-orange-600 dark:hover:text-gray-300"
-                >
-                  Contact Us
-                </a>
+              <li className="hover:text-kesari dark:hover:text-kesari">
+                <Link to="/contact">Contact Us</Link>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-orange-600 dark:hover:text-gray-300"
-                >
-                  My Orders
-                </a>
+              <li className="hover:text-kesari dark:hover:text-kesari">
+                <Link to="/orders">My Orders</Link>
               </li>
             </ul>
           </div>
@@ -81,26 +51,28 @@ const Footer = () => {
             </h5>
             <div className="flex justify-center sm:justify-start gap-4">
               <a
-                href="#"
-                className="text-gray-600 dark:text-gray-300 hover:text-orange-600"
+                href="https://www.instagram.com/maverick_4200/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600 dark:text-gray-300 hover:text-kesari dark:hover:text-kesari"
               >
                 <Instagram />
               </a>
               <a
                 href="#"
-                className="text-gray-600 dark:text-gray-300 hover:text-orange-600"
+                className="text-gray-600 dark:text-gray-300 hover:text-kesari dark:hover:text-kesari"
               >
                 <FacebookIcon />
               </a>
               <a
                 href="#"
-                className="text-gray-600 dark:text-gray-300 hover:text-orange-600"
+                className="text-gray-600 dark:text-gray-300 hover:text-kesari dark:hover:text-kesari"
               >
                 <Twitter />
               </a>
               <a
                 href="#"
-                className="text-gray-600 dark:text-gray-300 hover:text-orange-600"
+                className="text-gray-600 dark:text-gray-300 hover:text-kesari dark:hover:text-kesari"
               >
                 <Linkedin />
               </a>
@@ -115,8 +87,8 @@ const Footer = () => {
               <br />
               Building 4, Jammu, J&K, India
             </address>
-            <Link to="/contact">
-              <Button className="bg-orange-600 hover:bg-orange-700 text-white w-full sm:w-auto">
+            <Link to="/bulkorders">
+              <Button className="bg-kesarilight hover:bg-kesari text-white w-full sm:w-auto">
                 Bulk Order
               </Button>
             </Link>

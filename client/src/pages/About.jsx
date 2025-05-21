@@ -13,7 +13,7 @@ const About = () => {
         />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
           <h1 className="text-4xl md:text-6xl font-extrabold mb-2">
-            Kashmir Kesar
+            Kashmir's Authentic Kesar
           </h1>
           <p className="text-lg md:text-xl">Pure. Handpicked. Authentic.</p>
         </div>
@@ -23,7 +23,7 @@ const About = () => {
       <div className="flex justify-center items-center px-4 py-10">
         <Card className="max-w-4xl w-full shadow-xl border border-orange-300 dark:border-orange-700">
           <CardContent className="p-6 space-y-5">
-            <h2 className="text-3xl font-bold text-orange-600">About Us</h2>
+            <h2 className="text-3xl font-bold text-kesarilight">About Us</h2>
             <p className="text-lg leading-7 text-muted-foreground">
               We are proud cultivators of the world’s finest saffron, grown in
               the pristine valleys of Kashmir, India. Our saffron, or "kesar",
@@ -31,6 +31,7 @@ const About = () => {
               methods, ensuring that every thread holds purity, aroma, and
               flavor.
             </p>
+
             <p className="text-lg leading-7 text-muted-foreground">
               From soil to strand, our mission is rooted in quality,
               sustainability, and tradition. Each pack of Kashmir Kesar tells a
@@ -43,7 +44,7 @@ const About = () => {
             />
             <br></br>
             <Link to="/contact">
-              <Button className="bg-orange-600 hover:bg-orange-700 text-white">
+              <Button className="bg-kesarilight hover:bg-kesari text-white">
                 Bulk Order
               </Button>
             </Link>

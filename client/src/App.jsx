@@ -23,6 +23,10 @@ import { Toaster } from "./components/ui/toaster";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import RefundPolicy from "./pages/RefundPolicy";
+import PrivacyPolicy from "./pages/PolicyPage";
+import TermsofService from "./pages/TermsofService";
+import BulkOrder from "./pages/BulkOrder";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -91,6 +95,38 @@ export default function App() {
       element: (
         <ProtectedRoute>
           <RootLayout children={<Contact />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/refundpolicy",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<RefundPolicy />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/privacypolicy",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<PrivacyPolicy />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/terms",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<TermsofService />} />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/bulkorders",
+      element: (
+        <ProtectedRoute>
+          <RootLayout children={<BulkOrder />} />
         </ProtectedRoute>
       ),
     },

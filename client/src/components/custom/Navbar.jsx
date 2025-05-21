@@ -28,16 +28,15 @@ const Navbar = () => {
       </div>
       <div className="flex gap-1 justify-center items-center text-xl">
         <Link to={"/"} className="text-2xl font-bold">
-          <img
-            src="logo.jpg"
-            alt="Logo"
-            className=" hidden sm:flex h-10 w-auto"
-          />
+          <img src="logonav.png" alt="Logo" className="sm:flex h-auto w-auto" />
         </Link>
-        Kashmiri Kesar
       </div>
       <div className="hidden  sm:flex gap-6 justify-center items-center py-4">
         <ul className="flex gap-6 font-semibold">
+          <li className="transform transition-transform duration-300 hover:scale-110">
+            <Link to="/bulkorders">Bulk Order</Link>
+          </li>
+
           <li className="transform transition-transform duration-300 hover:scale-110">
             <Link to="/about">About Us</Link>
           </li>

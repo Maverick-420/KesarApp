@@ -1,3 +1,4 @@
+import FeatureHighlights from "@/components/custom/FeatureHighlights";
 import FilterMenu from "@/components/custom/FilterMenu";
 import HeaderDisplay from "@/components/custom/HeaderDisplay";
 import ProductList from "@/components/custom/ProductList";
@@ -7,6 +8,7 @@ const Home = () => {
   return (
     <div>
       <HeaderDisplay />
+      <FeatureHighlights></FeatureHighlights>
       <FilterMenu />
       <ProductList />
     </div>
