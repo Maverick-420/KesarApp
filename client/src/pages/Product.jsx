@@ -3,35 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Colors } from "@/constants/colors";
 import { starsGenerator } from "@/constants/helper";
-import useRazorpay from "@/hooks/use-razorpay";
 import { useToast } from "@/hooks/use-toast";
 import { addToCart } from "@/redux/slices/cartSlice";
 import axios from "axios";
-import { Circle, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-
-const imagesArray = [
-  {
-    url: "https://images.pexels.com/photos/532173/pexels-photo-532173.jpeg?auto=compress&cs=tinysrgb&w=600",
-    id: 1,
-  },
-  {
-    url: "https://images.pexels.com/photos/532173/pexels-photo-532173.jpeg?auto=compress&cs=tinysrgb&w=600",
-    id: 2,
-  },
-  {
-    url: "https://images.pexels.com/photos/532173/pexels-photo-532173.jpeg?auto=compress&cs=tinysrgb&w=600",
-    id: 3,
-  },
-  {
-    url: "https://images.pexels.com/photos/532173/pexels-photo-532173.jpeg?auto=compress&cs=tinysrgb&w=600",
-    id: 4,
-  },
-];
-
-const productStock = 5;
 
 const Product = () => {
   const { productName } = useParams();
@@ -39,12 +17,9 @@ const Product = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { toast } = useToast();
   const dispatch = useDispatch();
-  const { verifyPayment, generatePayment } = useRazorpay();
   const [productQuantity, setProductQuantity] = useState(1);
   const [pincode, setPincode] = useState("");
   const [availabilityMessage, setAvailabilityMessage] = useState("");
-  const [purchaseProduct, setPurchaseProduct] = useState(false);
-  const [address, setAddress] = useState("");
   const [product, setProduct] = useState({});
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -63,8 +38,6 @@ const Product = () => {
 
     fetchProductByName();
   }, [productName]);
-
-  const calculateEmi = (price) => Math.round(price / 6);
 
   const checkAvailability = async () => {
     if (pincode.trim() === "") {
@@ -90,13 +63,24 @@ const Product = () => {
       navigate("/login");
       return;
     }
+
+    if (!product.stock || productQuantity > product.stock) {
+      toast({ title: "Product out of stock or quantity exceeds availability" });
+      return;
+    }
+
+    if (product.blacklisted) {
+      toast({ title: "Product isn't available for purchase" });
+      return;
+    }
+
     dispatch(
       addToCart({
         _id: product._id,
         name: product.name,
         price: product.price,
         quantity: productQuantity,
-        image: product.images[0].url,
+        image: product.images[0]?.url,
         stock: product.stock,
         blacklisted: product.blacklisted,
       })
@@ -108,36 +92,43 @@ const Product = () => {
     });
   };
 
-  const handleBuyNow = async () => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
-    }
+const handleBuyNow = () => {
+  if (!isAuthenticated) {
+    navigate("/login");
+    return;
+  }
 
-    if (productQuantity > product.stock) {
-      toast({ title: "Product out of stock" });
-      return;
-    }
+  if (!product.stock || productQuantity > product.stock) {
+    toast({ title: "Product out of stock or quantity exceeds availability" });
+    return;
+  }
 
-    if (product.blacklisted) {
-      toast({ title: "Product isn't available for purchase" });
-      return;
-    }
-    const order = await generatePayment(product.price * productQuantity);
-    await verifyPayment(
-      order,
-      [{ id: product._id, quantity: productQuantity }],
-      address
-    );
+  if (product.blacklisted) {
+    toast({ title: "Product isn't available for purchase" });
+    return;
+  }
 
-    setPurchaseProduct(false);
-  };
+  // First, add the product to the cart
+  dispatch(
+    addToCart({
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      quantity: productQuantity,
+      image: product.images[0]?.url,
+      stock: product.stock,
+      blacklisted: product.blacklisted,
+    })
+  );
+
+  // Then redirect to checkout
+  navigate("/checkout");
+};
 
   return (
     <>
       <div>
         <main className="w-[93vw] lg:w-[70vw] flex flex-col sm:flex-row justify-start items-start gap-10 mx-auto my-10">
-          {/* LEFT SIDE */}
           <div className="grid sm:w-[50%] gap-3">
             <img
               src={product?.images?.[selectedImage]?.url}
@@ -169,12 +160,7 @@ const Product = () => {
             </div>
 
             <div className="py-5 border-t border-b">
-              <h3 className="font-bold text-xl">
-                Rs.{product.price} or Rs.{calculateEmi(product.price)}/month
-              </h3>
-              <p className="text-sm">
-                Suggested payments with 6 months special financing
-              </p>
+              <h3 className="font-bold text-xl">Rs.{product.price}</h3>
             </div>
             <div className="py-5">
               <div className="flex gap-3 items-center">
@@ -192,24 +178,30 @@ const Product = () => {
                     cursor={"pointer"}
                     onClick={() =>
                       setProductQuantity((qty) =>
-                        qty < productStock ? qty + 1 : qty
+                        typeof product.stock === "number" && qty < product.stock
+                          ? qty + 1
+                          : qty
                       )
                     }
                   />
                 </div>
-
-                {product.stock - productQuantity > 0 && (
-                  <div className="grid text-sm font-semibold text-gray-600">
-                    <span>
-                      Only{" "}
-                      <span className="text-customYellow">
-                        {product.stock - productQuantity} items{" "}
+                {typeof product.stock === "number" &&
+                  product.stock > 0 &&
+                  product.stock - productQuantity < 10 && (
+                    <div className="grid text-sm font-semibold text-gray-600">
+                      <span>
+                        Only{" "}
+                        <span className="text-customYellow">
+                          {product.stock - productQuantity} item
+                          {product.stock - productQuantity === 1
+                            ? ""
+                            : "s"}{" "}
+                        </span>
+                        left!
                       </span>
-                      left!
-                    </span>
-                    <span>Don't miss it</span>
-                  </div>
-                )}
+                      <span>Don't miss it</span>
+                    </div>
+                  )}
               </div>
 
               <div className="grid gap-3 my-5">
@@ -226,23 +218,11 @@ const Product = () => {
               </div>
 
               <div className="flex gap-3">
-                <Button onClick={() => setPurchaseProduct(true)}>
-                  Buy Now
-                </Button>
+                <Button onClick={handleBuyNow}>Buy Now</Button>
                 <Button variant="outline" onClick={handleAddToCart}>
                   Add to Cart
                 </Button>
               </div>
-
-              {purchaseProduct && (
-                <div className="my-2 space-y-2">
-                  <Input
-                    placeholder="Enter Your Address Here..."
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                  <Button onClick={handleBuyNow}>Confirm Order</Button>
-                </div>
-              )}
             </div>
           </div>
         </main>
