@@ -27,6 +27,7 @@ import RefundPolicy from "./pages/RefundPolicy";
 import PrivacyPolicy from "./pages/PolicyPage";
 import TermsofService from "./pages/TermsofService";
 import BulkOrder from "./pages/BulkOrder";
+import AuthHandler from "./components/custom/AuthHandler";
 
 export default function App() {
   const router = createBrowserRouter([

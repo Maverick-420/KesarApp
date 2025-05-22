@@ -1,7 +1,9 @@
+import GoogleLoginButton from "@/components/custom/GoogleLoginButton";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -74,23 +76,24 @@ const Signup = () => {
             </label>
           </div>
           <Button disabled={!enabled}>Sign Up</Button>
-          <div className="flex gap-2 items-center">
+        </form>
+        <GoogleLoginButton />
+        <div className="flex gap-2 items-center">
+          <label
+            htmlFor="terms"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Already have an account?
+          </label>
+          <Link to={"/login"}>
             <label
               htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
             >
-              Already have an account?
+              Login
             </label>
-            <Link to={"/login"}>
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                Login
-              </label>
-            </Link>
-          </div>
-        </form>
+          </Link>
+        </div>
       </div>
     </>
   );

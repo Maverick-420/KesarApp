@@ -1,3 +1,4 @@
+import GoogleLoginButton from "@/components/custom/GoogleLoginButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
@@ -54,24 +55,25 @@ const Login = () => {
           type="password"
           name="password"
         />
-        <Button>Sign Up</Button>
-        <div className="flex gap-2 items-center">
+        <Button>Log In</Button>
+      </form>
+      <GoogleLoginButton />
+      <div className="flex gap-2 items-center">
+        <label
+          htmlFor="terms"
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          Don't have an account?
+        </label>
+        <Link to={"/signup"}>
           <label
             htmlFor="terms"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
           >
-            Don't have an account?
+            signup
           </label>
-          <Link to={"/signup"}>
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-            >
-              signup
-            </label>
-          </Link>
-        </div>
-      </form>
+        </Link>
+      </div>
     </div>
   );
 };
