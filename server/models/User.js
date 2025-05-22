@@ -13,16 +13,25 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: function () {
+        return !this.googleId;
+      },
     },
     phone: {
       type: String,
       unique: true,
+      sparse: true,
+      required: false,
     },
     otp: {
       type: Number,
       default: 0,
     },
+    googleId: {
+      type: String,
+      required: false,
+    },
+
     role: {
       type: String,
       default: "user",
