@@ -3,48 +3,26 @@ import { useToast } from "@/hooks/use-toast";
 import { addToCart, removeFromCart } from "@/redux/slices/cartSlice";
 import { Minus, Plus } from "lucide-react";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
-import useRazorpay from "@/hooks/use-razorpay";
+import { useDispatch } from "react-redux";
 
-const CartProduct = ({
-  name,
-  price,
-  _id,
-  image,
-  rating,
-  quantity,
-  stock,
-  blacklisted,
-}) => {
+const CartProduct = ({ name, price, _id, image, quantity, stock }) => {
   const dispatch = useDispatch();
   const { toast } = useToast();
-  const navigate = useNavigate();
-  const { generatePayment, verifyPayment } = useRazorpay();
-  const { isAuthenticated } = useSelector((state) => state.auth);
 
-  const handleBuyNow = async () => {
-    if (!isAuthenticated) {
-      navigate("/login");
-      return;
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      dispatch(removeFromCart({ _id, quantity: 1, price }));
+    } else {
+      toast({ title: "Quantity can't be less than 1" });
     }
+  };
 
-    if (quantity > stock) {
-      toast({ title: "Product out of stock" });
-      return;
+  const handleIncrease = () => {
+    if (quantity < stock) {
+      dispatch(addToCart({ _id, quantity: 1, price }));
+    } else {
+      toast({ title: "Quantity Exceeded Available Stock" });
     }
-
-    if (blacklisted) {
-      toast({ title: "Product isn't available for purchase" });
-      return;
-    }
-    const order = await generatePayment(price * quantity);
-    await verifyPayment(
-      order,
-      [{ id: _id, quantity, color }],
-      "123 Main street"
-    );
   };
 
   return (
@@ -64,9 +42,8 @@ const CartProduct = ({
               <Minus
                 size={15}
                 stroke={Colors.customGray}
-                onClick={() =>
-                  dispatch(removeFromCart({ _id, quantity: 1, price }))
-                }
+                onClick={handleDecrease}
+                className="cursor-pointer"
               />
               <span className="text-slate-950 text-sm sm:text-md">
                 {quantity}
@@ -74,17 +51,11 @@ const CartProduct = ({
               <Plus
                 size={15}
                 stroke={Colors.customGray}
-                onClick={() => {
-                  stock === quantity
-                    ? toast({ title: "Maximum stock reached" })
-                    : dispatch(addToCart({ _id, quantity: 1, price }));
-                }}
+                onClick={handleIncrease}
+                className="cursor-pointer"
               />
             </div>
           </div>
-          <Button onClick={handleBuyNow} size="sm">
-            Buy Now
-          </Button>
         </div>
       </div>
     </div>
