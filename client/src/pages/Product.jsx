@@ -40,11 +40,10 @@ const Product = () => {
   }, [productName]);
 
   const checkAvailability = async () => {
-    if (pincode.trim() === "") {
+    if (pincode.trim() === "" || pincode.length < 6 || pincode.length > 6) {
       setAvailabilityMessage("Please enter a valid pincode");
       return;
     }
-
     try {
       const res = await axios.get(
         import.meta.env.VITE_API_URL + `/get-pincode/${pincode}`
@@ -92,7 +91,7 @@ const Product = () => {
     });
   };
 
-const cartItems = useSelector((state) => state.cart.cartItems);
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   const handleBuyNow = () => {
     if (!isAuthenticated) {
