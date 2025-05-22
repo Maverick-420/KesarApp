@@ -79,10 +79,10 @@ const CreateProducts = () => {
       });
     }
 
-    if (images.length < 4) {
+    if (images.length < 2) {
       return toast({
         title: "Error",
-        description: "Please upload at least 4 images",
+        description: "Please upload at least 2 images",
       });
     }
 
@@ -221,7 +221,7 @@ const CreateProducts = () => {
                     </div>
                   ))}
 
-                  {images.length < 4 && (
+                  {images.length < 2 && (
                     <Button
                       onClick={() => fileInputRef.current?.click()}
                       className="w-[100px] h-[100px]"

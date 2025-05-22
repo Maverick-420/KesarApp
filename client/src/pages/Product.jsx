@@ -92,38 +92,40 @@ const Product = () => {
     });
   };
 
-const handleBuyNow = () => {
-  if (!isAuthenticated) {
-    navigate("/login");
-    return;
-  }
+const cartItems = useSelector((state) => state.cart.cartItems);
 
-  if (!product.stock || productQuantity > product.stock) {
-    toast({ title: "Product out of stock or quantity exceeds availability" });
-    return;
-  }
+  const handleBuyNow = () => {
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
 
-  if (product.blacklisted) {
-    toast({ title: "Product isn't available for purchase" });
-    return;
-  }
+    if (!product.stock || productQuantity > product.stock) {
+      toast({ title: "Product out of stock or quantity exceeds availability" });
+      return;
+    }
 
-  // First, add the product to the cart
-  dispatch(
-    addToCart({
-      _id: product._id,
-      name: product.name,
-      price: product.price,
-      quantity: productQuantity,
-      image: product.images[0]?.url,
-      stock: product.stock,
-      blacklisted: product.blacklisted,
-    })
-  );
+    if (product.blacklisted) {
+      toast({ title: "Product isn't available for purchase" });
+      return;
+    }
 
-  // Then redirect to checkout
-  navigate("/checkout");
-};
+    if (cartItems.length === 0) {
+      dispatch(
+        addToCart({
+          _id: product._id,
+          name: product.name,
+          price: product.price,
+          quantity: productQuantity,
+          image: product.images[0]?.url,
+          stock: product.stock,
+          blacklisted: product.blacklisted,
+        })
+      );
+    }
+
+    navigate("/checkout");
+  };
 
   return (
     <>
