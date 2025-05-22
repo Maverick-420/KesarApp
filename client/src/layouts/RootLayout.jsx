@@ -9,7 +9,6 @@ const RootLayout = ({ children }) => {
     <>
       <ScrollToTop />
       <AuthHandler />
-
       <Navbar />
       {children}
       <Footer />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SidebarInset } from "../ui/sidebar";
 import { Activity, CreditCard, DollarSign, Users } from "lucide-react";
-import { Chart1 } from "./Chart1";
+import Chart1 from "@/components/custom/Chart1";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import useErrorLogout from "@/hooks/use-error-logout";
 import axios from "axios";
@@ -40,7 +40,6 @@ const Analytics = () => {
             <div className="h-fit rounded-xl bg-muted/50 p-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-md font-semibold">Total Sales</h3>
-                <DollarSign size={16} />
               </div>
               <div className="grid mt-2">
                 <span className="text-2xl font-bold">

@@ -1,13 +1,11 @@
-"use client";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
-
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Colors } from "@/constants/colors";
 import {
   Card,
   CardContent,
@@ -17,41 +15,51 @@ import {
   CardTitle,
 } from "../ui/card";
 import { TrendingUp } from "lucide-react";
-
-const chartData = [
-  { month: "January", keyboard: 186, mouse: 80, headset: 50 },
-  { month: "February", keyboard: 305, mouse: 200, headset: 50 },
-  { month: "March", keyboard: 237, mouse: 120, headset: 50 },
-  { month: "April", keyboard: 73, mouse: 190, headset: 50 },
-  { month: "May", keyboard: 209, mouse: 130, headset: 50 },
-  { month: "June", keyboard: 214, mouse: 140, headset: 50 },
-];
+import { Colors } from "@/constants/colors";
 
 const chartConfig = {
-  keyboard: {
-    label: "Keyboard",
+  kesar: {
+    label: "Kesar",
     color: Colors.customGray,
   },
-  mouse: {
-    label: "Mouse",
+  "ayurvedic herbs": {
+    label: "Ayurvedic Herbs",
     color: Colors.customYellow,
   },
-  headset: {
-    label: "Headset",
+  others: {
+    label: "Others",
     color: Colors.customIsabelline,
   },
 };
 
-export function Chart1() {
+const Chart1 = () => {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const res = await axios.get(
+          import.meta.env.VITE_API_URL + "/product-stats"
+        );
+        console.log("Full Response", res.data);
+        setChartData(res.data.data);
+      } catch (error) {
+        console.error("Failed to fetch chart data", error);
+      }
+    };
+
+    fetchChartData();
+  }, []);
+
   return (
     <Card className="flex-1 rounded-xl bg-muted/50 md:min-hmin">
       <CardHeader>
-        <CardTitle>Bar chart - Multiple</CardTitle>
-        <CardDescription>January - June 2025</CardDescription>
+        <CardTitle>Sales by Category</CardTitle>
+        <CardDescription>Monthly Overview (Live)</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
@@ -61,20 +69,22 @@ export function Chart1() {
               tickFormatter={(value) => value.slice(0, 3)}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
-            <Bar dataKey="keyboard" fill="var(--color-keyboard)" radius={4} />
-            <Bar dataKey="mouse" fill="var(--color-mouse)" radius={4} />
-            <Bar dataKey="headset" fill="var(--color-headset)" radius={4} />
+            <Bar dataKey="Kesar" fill="#ff8a00" radius={4} />
+            <Bar dataKey="AyurvedicHerbs" fill="#c2b280" radius={4} />
+            <Bar dataKey="Others" fill="#e0e0e0" radius={4} />
           </BarChart>
         </ChartContainer>
         <CardFooter className="flex-col items-start gap-2 text-sm">
           <div className="flex gap-2 font-medium leading-none">
-            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+            Live category trends <TrendingUp className="h-4 w-4" />
           </div>
           <div className="leading-none text-muted-foreground">
-            Showing total visitors for the last 6 months
+            Based on product creation by month
           </div>
         </CardFooter>
       </CardContent>
     </Card>
   );
-}
+};
+
+export default Chart1;

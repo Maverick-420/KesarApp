@@ -20,7 +20,6 @@ import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -114,6 +113,32 @@ const AllProducts = () => {
       handleErrorLogout(error, "Error occured while blacklisting product");
     }
   };
+  const handleDelete = async (id) => {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
+    if (!confirm) return;
+
+    try {
+      const res = await axios.delete(
+        import.meta.env.VITE_API_URL + `/delete-product/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      const { message } = res.data;
+      dispatch(setProducts(products.filter((p) => p._id !== id)));
+      toast({
+        title: "Success",
+        description: message,
+      });
+    } catch (error) {
+      handleErrorLogout(error, "Error occurred while deleting product");
+    }
+  };
 
   const handleEdit = (product) => {
     setEditingProduct(product);
@@ -169,7 +194,6 @@ const AllProducts = () => {
   return (
     <div className="mx-auto px-4 sm:px-8 -z-10">
       <h1 className="text-3xl font-bold mb-8">Our Products</h1>
-
       <div className="mb-8">
         <form className="flex gap-4 items-end sm:w-[80vw]">
           <div className="flex-1">
@@ -244,6 +268,13 @@ const AllProducts = () => {
                 <Button variant="outline" onClick={() => handleEdit(product)}>
                   <Edit className="mr-2 h-4 s-4" /> Edit
                 </Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => handleDelete(product._id)}
+                >
+                  Delete
+                </Button>
+
                 <Button
                   onClick={() => {
                     !product.blacklisted

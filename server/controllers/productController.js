@@ -1,6 +1,7 @@
 const { ROLES } = require("../utils/constants");
 const Product = require("../models/Product");
 const cloudinary = require("../utils/cloudinary");
+const Order = require("../models/Order");
 
 const createProduct = async (req, res) => {
   if (req.role !== ROLES.admin) {
@@ -90,6 +91,63 @@ const deleteProduct = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getMonthlySalesByCategory = async (req, res) => {
+  try {
+    const stats = await Order.aggregate([
+      { $unwind: "$products" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products.id",
+          foreignField: "_id",
+          as: "productInfo",
+        },
+      },
+      { $unwind: "$productInfo" },
+      {
+        $group: {
+          _id: {
+            month: { $month: "$createdAt" },
+            category: "$productInfo.category",
+          },
+          totalQuantity: { $sum: "$products.quantity" },
+        },
+      },
+      { $sort: { "_id.month": 1 } },
+    ]);
+
+    // Transform to frontend format
+    const monthlyStats = {};
+
+    stats.forEach(({ _id, totalQuantity }) => {
+      const monthName = new Date(2025, _id.month - 1).toLocaleString(
+        "default",
+        {
+          month: "long",
+        }
+      );
+
+      if (!monthlyStats[monthName]) {
+        monthlyStats[monthName] = {
+          month: monthName,
+          Kesar: 0,
+          AyurvedicHerbs: 0,
+          Others: 0,
+        };
+      }
+
+      monthlyStats[monthName][_id.category] = totalQuantity;
+    });
+
+    const chartData = Object.values(monthlyStats);
+
+    res.status(200).json({ success: true, data: chartData });
+  } catch (error) {
+    console.error("Error in sales aggregation:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
@@ -238,6 +296,7 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getMonthlySalesByCategory,
   getProducts,
   getProductByName,
   blacklistProduct,

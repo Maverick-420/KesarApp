@@ -1,7 +1,5 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-
-// Your User model
 const User = require("../models/User");
 
 passport.use(
@@ -32,7 +30,6 @@ passport.use(
   )
 );
 
-// (optional) session support
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });

@@ -1,28 +1,45 @@
 const express = require("express");
-const passport = require("passport");
-const jwt = require("jsonwebtoken");
-
 const router = express.Router();
+const jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const User = require("../models/User");
 
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-router.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    session: false,
-    failureRedirect: "/login",
-  }),
-  (req, res) => {
-    const user = req.user; // passport sets this
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+router.post("/auth/google", async (req, res) => {
+  const { token } = req.body;
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
     });
-    const encodedUser = encodeURIComponent(JSON.stringify(user));
-    res.redirect(`http://localhost:5173/?token=${token}&user=${encodedUser}`);
+
+    const payload = ticket.getPayload();
+    const { email, name, picture, sub: googleId } = payload;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = await User.create({ email, name, profilePic: picture, googleId });
+    }
+
+    const jwtToken = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    res.json({
+      message: "Logged in successfully",
+      token: jwtToken,
+      user,
+    });
+  } catch (error) {
+    console.error("Google Login Error:", error);
+    res.status(401).json({ message: "Invalid Google token" });
   }
-);
+});
 
 module.exports = router;

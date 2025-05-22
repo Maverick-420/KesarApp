@@ -108,7 +108,6 @@ const getMetrics = async (req, res) => {
     );
     const end = new Date(endDate || new Date());
 
-    // Calculate total sales
     const ordersInRange = await Order.find({
       createdAt: { $gte: start, $lte: end },
     });
@@ -117,35 +116,28 @@ const getMetrics = async (req, res) => {
       0
     );
 
-    // Calculate this month's orders
     const thisMonthOrders = ordersInRange;
 
-    // Get the last month
     const lastMonth = new Date(new Date().setMonth(new Date().getMonth() - 1));
 
-    // Calculate last month's orders
     const lastMonthOrders = await Order.find({
       createdAt: { $gte: lastMonth, $lte: start },
     });
 
-    // Calculate total amount of this month's orders
     const totalThisMonth = thisMonthOrders.reduce(
       (acc, order) => acc + order.amount,
       0
     );
 
-    // Calculate total amount of last month's orders
     const totalLastMonth = lastMonthOrders.reduce(
       (acc, order) => acc + order.amount,
       0
     );
 
-    // Calculate growth
     const salesGrowth = totalLastMonth
       ? ((totalThisMonth - totalLastMonth) / totalLastMonth) * 100
       : 0;
 
-    // Calculate users
     const thisMonthUsers = await User.find({
       createdAt: { $gte: start, $lte: end },
     });
@@ -160,7 +152,6 @@ const getMetrics = async (req, res) => {
         100
       : 0;
 
-    // Calculate users purchased last hour
     const lastHour = new Date(new Date().setHours(new Date().getHours() - 1));
 
     const lastHourOrders = await Order.find({
@@ -177,7 +168,6 @@ const getMetrics = async (req, res) => {
       ? (lastHourOrders.length / previousDayOrders.length) * 100
       : 0;
 
-    // Recent sales
     const recentOrders = await Order.find()
       .populate({
         path: "userId",
@@ -187,7 +177,6 @@ const getMetrics = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(9);
 
-    // products delivered in last 6 months with their category and count according to month
     const sixMonthsAgo = new Date(
       new Date().setMonth(new Date().getMonth() - 6)
     );
@@ -199,13 +188,13 @@ const getMetrics = async (req, res) => {
       select: "category",
     });
 
-    // get them month wise for eg ; {jan : {keyboard : 1, mouse :1, headset 2}}
     const monthWise = sixMonthsOrders.reduce((acc, order) => {
       const month = new Date(order.createdAt).toLocaleString("default", {
         month: "short",
       });
 
       order.products.forEach((product) => {
+        if (!product.id || !product.id.category) return;
         if (!acc[month]) {
           acc[month] = {};
         }

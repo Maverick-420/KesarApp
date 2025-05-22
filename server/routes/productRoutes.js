@@ -7,6 +7,7 @@ const {
   getProductByName,
   blacklistProduct,
   removeFromBlacklist,
+  getMonthlySalesByCategory,
 } = require("../controllers/productController");
 const verifyToken = require("../middlewares/verifyToken");
 const upload = require("../middlewares/multer");
@@ -17,6 +18,8 @@ router.post(
   upload.array("images", 4),
   createProduct
 );
+
+router.get("/product-stats", getMonthlySalesByCategory);
 
 router.put("/update-product/:id", verifyToken, updateProduct);
 

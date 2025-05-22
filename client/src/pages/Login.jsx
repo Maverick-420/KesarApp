@@ -23,6 +23,7 @@ const Login = () => {
         title: "Please fill all the fields",
         variant: "destructive",
       });
+      return;
     }
 
     try {

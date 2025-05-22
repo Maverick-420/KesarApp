@@ -104,9 +104,9 @@ const replyReview = async (req, res) => {
 };
 
 const deleteReview = async (req, res) => {
-  if (req.role !== ROLES.user) {
-    return res.status(401).json({ success: false, message: "Access denied" });
-  }
+  // if (req.role !== ROLES.user) {
+  //   return res.status(401).json({ success: false, message: "Access denied" });
+  // }
 
   try {
     const { id } = req.params;

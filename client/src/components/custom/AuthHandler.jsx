@@ -12,7 +12,6 @@ const AuthHandler = () => {
     const params = new URLSearchParams(location.search);
     const token = params.get("token");
     const user = params.get("user");
-
     if (token && user) {
       const parsedUser = JSON.parse(decodeURIComponent(user));
       dispatch(setUserLogin({ token, user: parsedUser }));

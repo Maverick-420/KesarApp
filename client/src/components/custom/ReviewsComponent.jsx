@@ -49,7 +49,6 @@ const ReviewsComponent = ({ productId }) => {
         variant: "destructive",
       });
     }
-
     try {
       const res = await axios.post(
         import.meta.env.VITE_API_URL + "/create-review",
