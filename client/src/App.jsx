@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
 import Navbar from "./components/custom/Navbar";
 import { ThemeProvider } from "./components/provider/theme-provider";
-import Signup from "./pages/Signup";
+import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
 import Product from "./pages/Product";
 import Checkout from "./pages/Checkout";
