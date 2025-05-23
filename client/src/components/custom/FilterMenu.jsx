@@ -13,12 +13,12 @@ import { setProducts } from "@/redux/slices/productSlice";
 
 const categoryData = {
   trigger: "Category",
-  items: ["kesar", "ayurvedicherbs", "others"],
+  items: ["Kesar", "AyurvedicHerbs", "Others"],
 };
 
 const priceData = {
   trigger: "Price",
-  items: [1000, 3000, 5000, 8000],
+  items: [200, 500, 1000, 2000],
 };
 
 const FilterMenu = () => {

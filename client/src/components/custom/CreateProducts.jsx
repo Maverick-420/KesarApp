@@ -190,7 +190,7 @@ const CreateProducts = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Kesar">Kesar</SelectItem>
-                  <SelectItem value="Ayurvedicherbs">Ayurvedicherbs</SelectItem>
+                  <SelectItem value="AyurvedicHerbs">AyurvedicHerbs</SelectItem>
                   <SelectItem value="Others">Others</SelectItem>
                 </SelectContent>
               </Select>
