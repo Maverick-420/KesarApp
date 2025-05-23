@@ -41,6 +41,9 @@ const Footer = () => {
               <li className="hover:text-kesari dark:hover:text-kesari">
                 <Link to="/orders">My Orders</Link>
               </li>
+              <li className="hover:text-kesari dark:hover:text-kesari">
+                <Link to="/admin/login">Admin Login</Link>
+              </li>
             </ul>
           </div>
 
