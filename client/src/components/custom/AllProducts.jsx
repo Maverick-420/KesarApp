@@ -231,9 +231,9 @@ const AllProducts = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="Kesar">kesar</SelectItem>
-                <SelectItem value="Ayurvedicherbs">ayurvedicherbs</SelectItem>
-                <SelectItem value="Other">other</SelectItem>
+                <SelectItem value="Kesar">Kesar</SelectItem>
+                <SelectItem value="Ayurvedicherbs">Ayurvedicherbs</SelectItem>
+                <SelectItem value="Other">Other</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -333,8 +333,8 @@ const AllProducts = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Kesar">kesar</SelectItem>
-                    <SelectItem value="Ayurvedicherbs">
-                      ayurvedicherbs
+                    <SelectItem value="AyurvedicHerbs">
+                      AyurvedicHerbs
                     </SelectItem>
                     <SelectItem value="Other">other</SelectItem>
                   </SelectContent>
